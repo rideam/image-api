@@ -89,7 +89,7 @@ async function composeImage(req, res, next) {
     context.drawImage(logo, width - logo.width - logoPadding, height - logo.height - logoPadding);
 
     const textPadding = 30;
-    context.font = "bold 50pt Monospace";
+    context.font = "bold 50pt";
     context.textAlign = "left";
 
     const textSize = context.measureText(req.query.text);
