@@ -2,7 +2,7 @@ const express = require("express");
 const crypto = require('crypto');
 const fs = require("fs");
 const client = require("https");
-const { createCanvas, loadImage } = require("canvas");
+const { createCanvas, loadImage, registerFont } = require("canvas");
 
 
 const app = express();
@@ -81,6 +81,7 @@ async function composeImage(req, res, next) {
     const width = background.width;
     const height = background.height;
 
+    registerFont("./Oswald-Regular.ttf", { family: "Oswald" });
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
 
@@ -89,15 +90,16 @@ async function composeImage(req, res, next) {
     context.drawImage(logo, width - logo.width - logoPadding, height - logo.height - logoPadding);
 
     const textPadding = 30;
-    context.font = "bold 50pt";
+    context.font = "bold 50pt Oswald";
     context.textAlign = "left";
+    context.textBaseline = "top";
 
     const textSize = context.measureText(req.query.text);
     context.fillStyle = "rgba(255, 255, 255, 0.8)"
     context.fillRect(0, 0, textSize.width + 2*textPadding, 200);
 
     context.fillStyle = "#444";
-    context.fillText(req.query.text, textPadding, 4*textPadding);
+    context.fillText(req.query.text, textPadding, textPadding);
 
 
     const buffer = canvas.toBuffer("image/png");
@@ -113,8 +115,8 @@ async function sendImage(req, res, next) {
 }
 
 async function cleanupFiles(req, res, next) {
-    fs.unlink(`./${req.identifier}-background.jpg`, (()=>{}));
-    fs.unlink(`./${req.identifier}-logo.jpg`, (()=>{}));
+    fs.unlink(`./${req.identifier}-background.jpg`, ()=>{});
+    fs.unlink(`./${req.identifier}-logo.jpg`, ()=>{});
     next();
 }
 
