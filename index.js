@@ -81,7 +81,7 @@ async function composeImage(req, res, next) {
     const width = background.width;
     const height = background.height;
 
-    registerFont("./Oswald-Regular.ttf", { family: "Oswald" });
+    registerFont("./ShortBaby.ttf", { family: "ShortBaby" });
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
 
@@ -90,7 +90,7 @@ async function composeImage(req, res, next) {
     context.drawImage(logo, width - logo.width - logoPadding, height - logo.height - logoPadding);
 
     const textPadding = 30;
-    context.font = "bold 50pt Oswald";
+    context.font = "bold 70pt ShortBaby";
     context.textAlign = "left";
     context.textBaseline = "top";
 
@@ -99,7 +99,7 @@ async function composeImage(req, res, next) {
     context.fillRect(0, 0, textSize.width + 2*textPadding, 200);
 
     context.fillStyle = "#444";
-    context.fillText(req.query.text, textPadding, textPadding);
+    context.fillText(req.query.text, textPadding, 2*textPadding);
 
 
     const buffer = canvas.toBuffer("image/png");
